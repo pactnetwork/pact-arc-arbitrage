@@ -1,0 +1,25 @@
+{
+  "name": "pact-arc-arbitrage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pact × Agora hackathon submission. Off-chain arbitrage agent that insures a Circle CCTP v2 burn (Arc Testnet → Base Sepolia) with Pact Network. Premium locked on Arc, refund on Arc if the bridge breaches the SLA.",
+  "scripts": {
+    "agent": "tsx examples/agora-arc-arbitrage/agent.ts",
+    "preflight": "tsx src/demo.ts --preflight-only",
+    "dashboard": "python3 -m http.server 8910 --directory dashboard",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

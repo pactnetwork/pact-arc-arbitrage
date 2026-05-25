@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pact × Agora — Insurance for Cross-Chain Agent Markets on Arc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #151311;
+    --surface: #1d1a17;
+    --border:  #2b2622;
+    --text:    #e8e4dd;
+    --muted:   #a8a098;
+    --dim:     #736d65;
+    --value:   #c89060;
+    --accent:  #c9553d;
+    --success: #7a8f5a;
+    --warn:    #c6892b;
+    --mono:    'JetBrains Mono', ui-monospace, monospace;
+    --serif:   'Instrument Serif', serif;
+    --sans:    'DM Sans', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
+  body { padding: 32px 24px; max-width: 1200px; margin: 0 auto; }
+  a { color: var(--value); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .mono { font-family: var(--mono); }
+  .serif { font-family: var(--serif); }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .dim { color: var(--dim); }
+  .muted { color: var(--muted); }
+
+  .hero { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+  .hero-top { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 16px; }
+  .hero-wordmark { font-family: var(--serif); font-size: 32px; letter-spacing: -0.01em; }
+  .hero-event { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+  .hero-tagline { font-family: var(--serif); font-size: 22px; line-height: 1.4; color: var(--text); max-width: 800px; }
+  .hero-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; font-size: 12px; color: var(--dim); font-family: var(--mono); }
+  .hero-meta a { color: var(--muted); }
+
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 24px; margin-bottom: 16px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; gap: 16px; }
+  .section-title { font-family: var(--serif); font-size: 24px; line-height: 1.1; }
+
+  .pos-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; align-items: center; }
+  .pos-num { font-family: var(--mono); font-size: 36px; font-weight: 500; letter-spacing: -0.01em; color: var(--text); }
+  .pos-num.value { color: var(--value); }
+  .pos-num .unit { font-size: 16px; color: var(--muted); margin-left: 6px; font-weight: 400; }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 12px; font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+  .pill.dim     { background: rgba(115, 109, 101, 0.18); color: var(--dim); }
+  .pill.value   { background: rgba(200, 144, 96, 0.18); color: var(--value); }
+  .pill.warn    { background: rgba(198, 137, 43, 0.18); color: var(--warn); }
+  .pill.success { background: rgba(122, 143, 90, 0.20); color: var(--success); }
+  .pill.accent  { background: rgba(201, 85, 61, 0.18); color: var(--accent); }
+  .pill .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .pill.warn .dot { animation: pulse 1.5s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.35 } }
+
+  .tx-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .tx-cell { display: flex; flex-direction: column; gap: 4px; }
+  .tx-cell .label { font-size: 10px; }
+  .tx-cell .hash { font-family: var(--mono); font-size: 12px; color: var(--value); }
+  .tx-cell .hash.empty { color: var(--dim); pointer-events: none; }
+
+  .timeline { position: relative; height: 56px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; margin: 16px 0 12px; overflow: hidden; }
+  .timeline-bar { position: absolute; top: 0; bottom: 0; left: 0; background: linear-gradient(90deg, rgba(198, 137, 43, 0.4), rgba(200, 144, 96, 0.4)); transition: width 0.5s ease; width: 0%; }
+  .timeline-ticks { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; padding: 6px 12px; pointer-events: none; }
+  .timeline-tick { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; font-family: var(--mono); font-size: 10px; color: var(--dim); }
+  .timeline-tick .mark { width: 1px; height: 10px; background: var(--border); margin-bottom: 2px; }
+  .timeline-elapsed { position: absolute; top: 50%; left: 16px; transform: translateY(-50%); font-family: var(--mono); font-size: 22px; color: var(--text); font-weight: 500; z-index: 2; }
+  .timeline-status { position: absolute; top: 50%; right: 16px; transform: translateY(-50%); font-family: var(--mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; z-index: 2; }
+  .timeline.done .timeline-bar { background: rgba(122, 143, 90, 0.3); width: 100% !important; }
+  .timeline.timeout .timeline-bar { background: rgba(201, 85, 61, 0.3); width: 100% !important; }
+
+  .slip-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .slip-cell { display: flex; flex-direction: column; gap: 6px; }
+  .slip-cell .label { font-size: 10px; }
+  .slip-cell .num { font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--text); }
+  .slip-cell .num.success { color: var(--success); }
+  .slip-cell .num.accent { color: var(--accent); }
+  .slip-cell .num .unit { font-size: 13px; color: var(--muted); margin-left: 4px; font-weight: 400; }
+  .slip-verdict { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--serif); font-size: 18px; }
+  .slip-verdict.breach { color: var(--accent); }
+  .slip-verdict.ok { color: var(--success); }
+  .slip-verdict.pending { color: var(--muted); }
+
+  .receipt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; }
+  .receipt-cell .label { font-size: 10px; margin-bottom: 4px; display: block; }
+  .receipt-cell .v { font-family: var(--mono); font-size: 14px; word-break: break-all; }
+  .receipt-payout { grid-column: 1 / -1; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-family: var(--serif); font-size: 26px; }
+  .receipt-payout.breach { color: var(--accent); }
+  .receipt-payout.ok { color: var(--success); }
+  .receipt-payout.pending { color: var(--muted); }
+
+  table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; }
+  td .pill { padding: 2px 7px; font-size: 10px; }
+  tbody tr:last-child td { border-bottom: 0; }
+  td a { color: var(--value); }
+
+  .footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: baseline; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--dim); }
+  .footer .links a { color: var(--muted); margin-left: 16px; }
+
+  @media (max-width: 900px) {
+    .pos-grid, .slip-grid, .receipt-grid { grid-template-columns: 1fr; }
+    .tx-row { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-wordmark">PACT</div>
+      <div class="label" style="margin-top: 4px;">Insurance for Cross-Chain Agent Markets · Arc Testnet ↔ Base Sepolia</div>
+    </div>
+    <div class="hero-event">Agora Hackathon Demo · 2026-05-25</div>
+  </div>
+  <p class="hero-tagline">Arc settles in 510ms. CCTP attestation takes ~15 minutes. In 15 minutes the price you arbed against may not exist anymore. <strong>That window is the product.</strong></p>
+  <div class="hero-meta">
+    <span>chain <span class="mono">5042002</span></span>
+    <span>rpc <a id="rpc-url" target="_blank" rel="noopener">rpc.testnet.arc.network</a></span>
+    <a id="link-registry" target="_blank" rel="noopener">PactRegistry ↗</a>
+    <a id="link-pool" target="_blank" rel="noopener">PactPool ↗</a>
+    <a id="link-settler" target="_blank" rel="noopener">PactSettler ↗</a>
+    <a href="index.html">Protocol stats →</a>
+  </div>
+</header>
+
+<section class="section" id="position-section">
+  <div class="section-head">
+    <h2 class="section-title">Live position</h2>
+    <span class="label" id="position-state">waiting for agent…</span>
+  </div>
+  <div class="pos-grid">
+    <div>
+      <div class="label">Insured notional</div>
+      <div class="pos-num value" id="pos-notional">—<span class="unit">USDC</span></div>
+    </div>
+    <div>
+      <div class="label">Premium paid</div>
+      <div class="pos-num" id="pos-premium">—<span class="unit">USDC</span></div>
+    </div>
+    <div>
+      <div class="label">Status</div>
+      <span class="pill dim" id="pos-status-pill"><span class="dot"></span>idle</span>
+    </div>
+  </div>
+  <div class="tx-row">
+    <div class="tx-cell"><span class="label">Registry tx</span><a class="hash empty" id="tx-registry" target="_blank" rel="noopener">—</a></div>
+    <div class="tx-cell"><span class="label">Burn tx (Arc)</span><a class="hash empty" id="tx-burn" target="_blank" rel="noopener">—</a></div>
+    <div class="tx-cell"><span class="label">Mint tx (Base)</span><a class="hash empty" id="tx-mint" target="_blank" rel="noopener">—</a></div>
+    <div class="tx-cell"><span class="label">Settle tx (Arc)</span><a class="hash empty" id="tx-settle" target="_blank" rel="noopener">—</a></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">CCTP attestation window</h2>
+    <span class="label">Arc → Base Sepolia · standard ~15 min</span>
+  </div>
+  <div class="timeline" id="timeline">
+    <div class="timeline-bar" id="timeline-bar"></div>
+    <div class="timeline-elapsed" id="timeline-elapsed">00:00</div>
+    <div class="timeline-status" id="timeline-status">pending</div>
+    <div class="timeline-ticks">
+      <div class="timeline-tick"><div class="mark"></div>0m</div>
+      <div class="timeline-tick"><div class="mark"></div>5m</div>
+      <div class="timeline-tick"><div class="mark"></div>10m</div>
+      <div class="timeline-tick"><div class="mark"></div>15m</div>
+    </div>
+  </div>
+  <p class="muted" id="timeline-note" style="font-size: 13px; margin: 0;">Arc settles in 510ms. The attestation window is the threat surface — every second between burn and mint is market risk the agent carries.</p>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">Slippage check</h2>
+    <span class="label">SLA threshold · <span class="mono" id="slip-threshold">50 bps</span></span>
+  </div>
+  <div class="slip-grid">
+    <div class="slip-cell">
+      <span class="label">Expected mint</span>
+      <span class="num" id="slip-expected">—<span class="unit">USDC</span></span>
+    </div>
+    <div class="slip-cell">
+      <span class="label">Actual mint</span>
+      <span class="num" id="slip-actual">—<span class="unit">USDC</span></span>
+    </div>
+    <div class="slip-cell">
+      <span class="label">Slippage</span>
+      <span class="num" id="slip-bps">—<span class="unit">bps</span></span>
+    </div>
+  </div>
+  <div class="slip-verdict pending" id="slip-verdict">Awaiting mint settlement…</div>
+</section>
+
+<section class="section" id="receipt-section">
+  <div class="section-head">
+    <h2 class="section-title">Settlement receipt</h2>
+    <span class="label" id="receipt-state">pending</span>
+  </div>
+  <div class="receipt-grid">
+    <div class="receipt-cell"><span class="label">callId</span><span class="v" id="r-callId">—</span></div>
+    <div class="receipt-cell"><span class="label">slug</span><span class="v" id="r-slug">—</span></div>
+    <div class="receipt-cell"><span class="label">premium</span><span class="v" id="r-premium">—</span></div>
+    <div class="receipt-cell"><span class="label">latency</span><span class="v" id="r-latency">—</span></div>
+    <div class="receipt-cell"><span class="label">breach</span><span class="v" id="r-breach">—</span></div>
+    <div class="receipt-cell"><span class="label">actualRefund</span><span class="v" id="r-actualRefund">—</span></div>
+  </div>
+  <div class="receipt-payout pending" id="receipt-payout">Awaiting settlement…</div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <h2 class="section-title">PactSettler · recent CallSettled events</h2>
+    <span class="label" id="feed-status">subscribing…</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>block</th>
+        <th>breach</th>
+        <th>latency</th>
+        <th>premium</th>
+        <th>refund</th>
+        <th>callId</th>
+        <th>tx</th>
+      </tr>
+    </thead>
+    <tbody id="event-feed">
+      <tr><td colspan="7" class="muted" style="text-align:center; padding: 24px;">loading recent settlements…</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer class="footer">
+  <div>Pact Network · pactnetwork.io</div>
+  <div class="links">
+    <a id="link-github" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://twitter.com/pactnetwork_io" target="_blank" rel="noopener">@pactnetwork_io</a>
+  </div>
+</footer>
+
+<script type="module" src="agora.js"></script>
+</body>
+</html>

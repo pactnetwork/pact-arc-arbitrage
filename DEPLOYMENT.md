@@ -211,7 +211,7 @@ Per the Agora Agents Hackathon (May 11–25, 2026) rules:
 
 1. Repo URL: `https://github.com/pactnetwork/pact-arc-arbitrage`
 2. Demo video: record per section 8 above, post to YouTube/X, link from README
-3. Submission form: link the repo + video + a one-paragraph pitch ("x402 has zero buyer protection. Pact insures cross-chain agent payments…")
+3. Submission form: link the repo + video + a one-paragraph pitch ("Pact insures the bridge window — premium on source chain, refund on source chain if the bridge breaches the SLA. Demo runs end-to-end on Arc Testnet → Base Sepolia via Circle CCTP v2.")
 4. Live contracts list: pull from README "Live contracts on Arc Testnet" table — each is Arcscan-verified
 
 Done.

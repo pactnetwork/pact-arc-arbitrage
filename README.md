@@ -4,7 +4,7 @@
 
 ## TL;DR
 
-x402 has zero buyer protection. Pact is the protocol that fixes it for institutions handling agent money. This demo wires an off-chain arbitrage agent to Pact's already-deployed contracts on Arc Testnet and insures every Circle CCTP v2 bridge leg the agent runs. On breach (attestation latency or destination slippage), the agent gets a USDC refund on Arc; on success, the pool keeps the premium. No new Solidity was deployed for this hackathon.
+An agent moving USDC across chains can't know for ~15 minutes whether the bridge will deliver. The destination price can move, the attestation can stall, the mint can short-deliver. Today the agent just eats that risk. Pact is the protocol that prices it — premium locked on the source chain when the bridge call is submitted, refund on the source chain if the bridge breaches the SLA. This demo wires an off-chain arbitrage agent to Pact's already-deployed contracts on Arc Testnet and insures every Circle CCTP v2 bridge leg the agent runs. On breach (attestation latency or destination slippage), the agent gets a USDC refund on Arc; on success, the pool keeps the premium. No new Solidity was deployed for this hackathon.
 
 ## What ships in this repo
 

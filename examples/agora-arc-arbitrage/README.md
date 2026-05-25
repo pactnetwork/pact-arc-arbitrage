@@ -106,7 +106,7 @@ prices.ts         USDC price-gap source (mock or CoinGecko)
 
 ## Submission narrative
 
-> Arc settles in 510 ms. CCTP attestation takes ~15 minutes. That window is the product. Pact insures the bridge window — premium on Arc, refund on Arc, all in USDC. The agent code in this directory is what an x402-style facilitator will eventually drive on behalf of a real arb agent that doesn't want to write its own bridge-failure-handling logic.
+> Arc settles in 510 ms. CCTP attestation takes ~15 minutes. That window is the product. Pact insures the bridge window — premium on Arc, refund on Arc, all in USDC. The agent code in this directory is what a real arb agent would drive end-to-end without having to write its own bridge-failure-handling logic.
 
 ## Honest scope
 

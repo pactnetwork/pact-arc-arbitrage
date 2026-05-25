@@ -8,7 +8,7 @@
  *   PactSettler  0xe461CE50ef53BFC10945B101FB94b11Ec5eB591f
  *
  * What's stubbed: the agent EOA and the SettlementEvent payload (latency,
- * breach flag, refund amount) come from this script, not from an x402
+ * breach flag, refund amount) come from this script, not from an automated
  * facilitator. The facilitator is the next milestone (and the grant's
  * Milestone 1 scope).
  */
